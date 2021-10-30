@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class CameraMover : MonoBehaviour
 {
-
     public float movementSpeed = 10f;
     public float freeLookSensitivity = 3f;
     public float zoomSensitivity = 10f;
-    /// Set to true when free looking (on right mouse button).
-    private bool looking = false;
-
-
-    // Start is called before the first frame update
+    
+    private bool look = false;
+  
     void Start()
     {
         
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -45,7 +41,7 @@ public class CameraMover : MonoBehaviour
         if (Input.GetKey(KeyCode.RightShift))
             Camera.main.transform.position = Camera.main.transform.position + (-Vector3.up * movementSpeed * Time.deltaTime);
 
-        if (looking)
+        if (look)
         {
             float newRotationX = Camera.main.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * freeLookSensitivity;
             float newRotationY = Camera.main.transform.localEulerAngles.x - Input.GetAxis("Mouse Y") * freeLookSensitivity;
@@ -61,29 +57,29 @@ public class CameraMover : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            StartLooking();
+            Startlook();
         }
         else if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            StopLooking();
+            Stoplook();
         }
     }
 
     void OnDisable()
     {
-        StopLooking();
+        Stoplook();
     }
 
-    public void StartLooking()
+    public void Startlook()
     {
-        looking = true;
+        look = true;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void StopLooking()
+    public void Stoplook()
     {
-        looking = false;
+        look = false;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
