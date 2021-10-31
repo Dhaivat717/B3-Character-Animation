@@ -6,26 +6,53 @@ public class DirectorScript : MonoBehaviour
 {
 
     private GameObject selected;
-    private Rigidbody selectedMover;
-    private Rigidbody rb;
+    private Rigidbody selectedPlayer;
+    public float walkingSpeed = 10f;
+    public float sensi = 3f;
+    public float zoom = 10f;
+    private bool seeing = false;
 
-    public float movementSpeed = 10f;
-    public float fastMovementSpeed = 100f;
-    public float freeLookSensitivity = 3f;
-    public float zoomSensitivity = 10f;
-    /// Set to true when free looking (on right mouse button).
-    private bool looking = false;
 
-    // Start is called before the first frame update
+    public void StopLooking()
+    {
+        seeing = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
     void Start()
     {
         selected = null;
-        selectedMover = null;
+        selectedPlayer = null;
     }
 
-    // Update is called once per frame
+    public void StartLooking()
+    {
+        seeing = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+
+    void OnDisable()
+    {
+        StopLooking();
+    }
+
     void Update()
     {
+        if (Input.GetKey(KeyCode.A))
+            Camera.main.transform.position = Camera.main.transform.position + (-Camera.main.transform.right * walkingSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.D))
+            Camera.main.transform.position = Camera.main.transform.position + (Camera.main.transform.right * walkingSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.W))
+            Camera.main.transform.position = Camera.main.transform.position + (Camera.main.transform.forward * walkingSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.S))
+            Camera.main.transform.position = Camera.main.transform.position + (-Camera.main.transform.forward * walkingSpeed * Time.deltaTime);
+
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -51,44 +78,30 @@ public class DirectorScript : MonoBehaviour
 
         }
 
-
-
-        if (Input.GetKey(KeyCode.A))
-            Camera.main.transform.position = Camera.main.transform.position + (-Camera.main.transform.right * movementSpeed * Time.deltaTime);
-
-        if (Input.GetKey(KeyCode.D))
-            Camera.main.transform.position = Camera.main.transform.position + (Camera.main.transform.right * movementSpeed * Time.deltaTime);
-
-        if (Input.GetKey(KeyCode.W))
-            Camera.main.transform.position = Camera.main.transform.position + (Camera.main.transform.forward * movementSpeed * Time.deltaTime);
-
-        if (Input.GetKey(KeyCode.S))
-            Camera.main.transform.position = Camera.main.transform.position + (-Camera.main.transform.forward * movementSpeed * Time.deltaTime);
-
         if (Input.GetKey(KeyCode.Q))
-            Camera.main.transform.position = Camera.main.transform.position + (Camera.main.transform.up * movementSpeed * Time.deltaTime);
+            Camera.main.transform.position = Camera.main.transform.position + (Camera.main.transform.up * walkingSpeed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.E))
-            Camera.main.transform.position = Camera.main.transform.position + (-Camera.main.transform.up * movementSpeed * Time.deltaTime);
+            Camera.main.transform.position = Camera.main.transform.position + (-Camera.main.transform.up * walkingSpeed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.R))
-            Camera.main.transform.position = Camera.main.transform.position + (Vector3.up * movementSpeed * Time.deltaTime);
+            Camera.main.transform.position = Camera.main.transform.position + (Vector3.up * walkingSpeed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.F))
-            Camera.main.transform.position = Camera.main.transform.position + (-Vector3.up * movementSpeed * Time.deltaTime);
+            Camera.main.transform.position = Camera.main.transform.position + (-Vector3.up * walkingSpeed * Time.deltaTime);
 
-        if (looking)
+        if (seeing)
         {
-            float newRotationX = Camera.main.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * freeLookSensitivity;
-            float newRotationY = Camera.main.transform.localEulerAngles.x - Input.GetAxis("Mouse Y") * freeLookSensitivity;
+            float newRotationX = Camera.main.transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensi;
+            float newRotationY = Camera.main.transform.localEulerAngles.x - Input.GetAxis("Mouse Y") * sensi;
             Camera.main.transform.localEulerAngles = new Vector3(newRotationY, newRotationX, 0f);
         }
 
         float axis = Input.GetAxis("Mouse ScrollWheel");
         if (axis != 0)
         {
-            var zoomSensitivity = this.zoomSensitivity;
-            Camera.main.transform.position = Camera.main.transform.position + Camera.main.transform.forward * axis * zoomSensitivity;
+            var zoom = this.zoom;
+            Camera.main.transform.position = Camera.main.transform.position + Camera.main.transform.forward * axis * zoom;
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -104,22 +117,9 @@ public class DirectorScript : MonoBehaviour
 
     }
 
-    void OnDisable()
-    {
-        StopLooking();
-    }
 
-    public void StartLooking()
-    {
-        looking = true;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
 
-    public void StopLooking()
-    {
-        looking = false;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
+
+
+
 }
