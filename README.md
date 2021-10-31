@@ -11,7 +11,7 @@
 - Camera uses WASD, Q, E, R, F, left click free turns, and wheel zooms (changes world-y up/down) in and out.
 - Click to move - click character to select, then click point on ground as destination
 - Jumps when navigating off-mesh links
-- Set up speed for characters; Transition form running/walking
+- Using bar on top set speed and select and unselect if you want character to run or not
 - Hold shift while the character is moving to run
 
 
