@@ -10,14 +10,14 @@
 
 - Camera uses WASD, Q, E, R, F, left click free turns, and wheel zooms (changes world-y up/down) in and out.
 - Click to move - click character to select, then click point on ground as destination
-- Jumps when navigating off-mesh links
-- Set up speed for characters; Transition form running/walking
+- Jumps automatically when obstacle is in the way.
+- Using bar on top set speed and select and unselect if you want character to run or not
 - Hold shift while the character is moving to run
 
 
 ## Part 3 - Crowd
 
-- 10 agents
-- Click to move - click character to select, then click point on ground as destination
-- On play, at the main scene, agents start in a “room” like location and evacuate through at most 3 different exists to a given point (this is defined before starting the simulation)
-- Implement breaking mechanics
+- On play, at the main scene, agents start in a “room” like location and evacuate through exists to a given point (this is defined before starting the simulation)
+- First all 10 agents go to the goal state
+- Click any character to select, then click point on ground as destination
+- Hold shift while the character is moving to run
