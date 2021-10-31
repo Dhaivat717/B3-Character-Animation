@@ -6,87 +6,106 @@ using static Util;
 public class ClickToMove : MonoBehaviour
 {
 
-    public Transform g;
+    //private UnityEngine.AI.NavMeshObstacle obstacle;
+    public Transform goal;
 
-    private UnityEngine.AI.NavMeshAgent agt;
-    private bool sel;
-    private bool m;
-    private Vector3 hd;
+    private UnityEngine.AI.NavMeshAgent agent;
+    private bool selected;
+    private bool move;
+    // private Vector3 MoveTo;
+    private Vector3 hDest;
 
-    
+    // Start is called before the first frame update
+    void Start()
+    {
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        //obstacle = GetComponent<UnityEngine.AI.NavMeshObstacle>();
+        selected = false;
+        move = true;
+        Destination(goal.position);
 
+        //obstacle.enabled = false;
+        agent.enabled = true;
+    }
+
+    // Update is called once per frame
     void Update()
     {
-        Vector3 ht = transform.position - vert(transform.position.y);
-        print(ht + ", " + hd);
-        if ((hd - ht).sqrMagnitude <= pow2(agt.stoppingDistance))
+        // if (selected && move)
+        // {
+        //     //obstacle.enabled = false;
+        //     agent.enabled = true;
+        //     // agent.destination = MoveTo;
+        //     agent.isStopped = false;
+        // }
+
+        Vector3 hTrans = transform.position - vert(transform.position.y);
+        print(hTrans + ", " + hDest);
+        if ((hDest - hTrans).sqrMagnitude <= pow2(agent.stoppingDistance))
         {
-            m = false;
+            move = false;
         }
 
-        if (m)
+        if (move)
         {
-            agt.isStopped = false;
+            // agent.enabled = true;
+            agent.isStopped = false;
         }
         else
         {
-            agt.isStopped = true;
+            // agent.enabled = false;
+            agent.isStopped = true;
         }
-    }
 
-    void Start()
-    {
-        agt = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        m = true;
-        sel = false;
-        Destination(g.position);
-        agt.enabled = true;
     }
 
     public void Select()
     {
-        sel = true;
-    }
-    
-    void OnTriggerEnter(Collider coll)
-    {
-        GameObject o = coll.gameObject;
-        if (canMove() && o.CompareTag("Agent") && getDest(o) == getDestination() && !cMove(o))
-        {
-            m = false;
-        }
-    }
-
-    public Vector3 getDestination()
-    {
-        return agt.destination;
-    }
-
-    private Vector3 getDest(GameObject go)
-    {
-        return go.GetComponent<ClickToMove>().getDestination();
+        selected = true;
     }
 
     public void Deselect()
     {
-        sel = false;
+        selected = false;
     }
 
     public void Destination(Vector3 d)
     {
-        agt.destination = d;
-        hd = d - vert(d.y);
-        m = true;
+        agent.destination = d;
+        hDest = d - vert(d.y);
+        move = true;
     }
 
     public bool canMove()
     {
-        return m;
+        return move;
     }
 
-    private bool cMove(GameObject go)
+    private bool canMove(GameObject go)
     {
         return go.GetComponent<ClickToMove>().canMove();
     }
- 
+
+    public Vector3 getDestination()
+    {
+        return agent.destination;
+    }
+
+    private Vector3 getDestination(GameObject go)
+    {
+        return go.GetComponent<ClickToMove>().getDestination();
+    }
+
+    void OnTriggerEnter(Collider coll)
+    {
+        GameObject other = coll.gameObject;
+        // print(coll + ", " + other);
+        // print(other.GetComponent<ClickToMove>());
+        if (canMove() && other.CompareTag("Agent"))
+            print(getDestination(other) + ", " + getDestination() + ", " + !canMove(other));
+        if (canMove() && other.CompareTag("Agent") && getDestination(other) == getDestination() && !canMove(other))
+        {
+            move = false;
+        }
+    }
 }
