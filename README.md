@@ -1,12 +1,10 @@
 # Assignment 3 Report
-## Part 1 - Animation
+## Part 1
 
 - Walk forward and backwards. Turn while walking forward. Turn in place. Strafe / Turn while walking backwards
 - Use WASD to move 
 - Hold shift with W to run
 - Jump while running, walking and standing also works The character Always jumps forward
-- 2D Blend Trees and >= two 2D Freeform Cartesian trees
-
 
 ## Part 2 - Animated Navigation
 
