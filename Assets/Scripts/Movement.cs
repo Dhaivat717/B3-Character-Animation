@@ -46,5 +46,4 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         t = 0;
     }
-
 }
